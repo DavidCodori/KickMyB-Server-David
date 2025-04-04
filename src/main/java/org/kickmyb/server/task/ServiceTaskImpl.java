@@ -79,6 +79,24 @@ public class ServiceTaskImpl implements ServiceTask {
     }
 
     @Override
+    public void deleteOne(long id, MUser user) throws  IllegalArgumentException {
+        MTask t = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Task not found"));
+        boolean userOwnsTask = user.tasks.stream()
+                .anyMatch(task -> task.id.equals(t.id));
+        if (!userOwnsTask) {
+            throw new IllegalArgumentException("Task with id " + id + " not found in user tasks");
+        }
+
+        user.tasks.removeIf(task -> task.id.equals(t.id));
+        repo.deleteById(t.id);
+
+        repoUser.saveAndFlush(user);
+
+    }
+
+
+
+    @Override
     public void updateProgress(long taskID, int value) {
         MTask element = repo.findById(taskID).get();
         // TODO validate value is between 0 and 100

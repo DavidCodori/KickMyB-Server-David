@@ -7,6 +7,7 @@ import org.kickmyb.transfer.HomeItemResponse;
 import org.kickmyb.transfer.TaskDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,17 @@ public class ControllerTask {
         MUser user = currentUser();
         return serviceTask.detail(id, user);
     }
+
+
+    @DeleteMapping(value = "/api/delete/{taskID}", produces = "text/plain")
+    public @ResponseBody String deleteTask(@PathVariable long taskID, @AuthenticationPrincipal MUser user ){
+        System.out.println("KICKB SERVER : Delete task : " + taskID);
+        ConfigHTTP.attenteArticifielle();
+        serviceTask.deleteOne(taskID, user);
+        return "";
+    }
+
+
 
     /**
      * Accède au Principal stocké dans la mémoire vivre (HttpSession)
