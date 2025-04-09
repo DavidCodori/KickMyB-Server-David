@@ -60,9 +60,10 @@ public class ControllerTask {
 
 
     @DeleteMapping(value = "/api/delete/{taskID}", produces = "text/plain")
-    public @ResponseBody String deleteTask(@PathVariable long taskID, @AuthenticationPrincipal MUser user ){
+    public @ResponseBody String deleteTask(@PathVariable long taskID ){
         System.out.println("KICKB SERVER : Delete task : " + taskID);
         ConfigHTTP.attenteArticifielle();
+        MUser user = currentUser();
         serviceTask.deleteOne(taskID, user);
         return "";
     }
