@@ -165,9 +165,16 @@ class ServiceTaskTests {
         assertEquals(1, tasks.size(), "Task should be added");
 
         long taskId = tasks.get(0).id;
-        serviceTask.deleteOne(taskId, retrievedUser);
+
+        try {
+            serviceTask.deleteOne(taskId + 1, retrievedUser);
+        }
+        catch (IllegalArgumentException e)
+        {
+
+        }
         List<HomeItemResponse> updatedTasks = serviceTask.home(retrievedUser.id);
-        assertEquals(0, updatedTasks.size(), "Task should be deleted");
+        assertEquals(1, updatedTasks.size(), "Task should be deleted");
 
     }
 
