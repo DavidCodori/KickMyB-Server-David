@@ -32,8 +32,8 @@ public class ServiceTaskImpl implements ServiceTask {
 
     @Override
     public TaskDetailResponse detail(Long id, MUser user) {
-        //MTask element = user.tasks.stream().filter(elt -> elt.id == id).findFirst().get();
-        MTask element = repo.findById(id).get();
+        MTask element = user.tasks.stream().filter(elt -> elt.id == id).findFirst().get();
+        //MTask element = repo.findById(id).get();
         TaskDetailResponse response = new TaskDetailResponse();
         response.name = element.name;
         response.id = element.id;
@@ -97,8 +97,8 @@ public class ServiceTaskImpl implements ServiceTask {
 
 
     @Override
-    public void updateProgress(long taskID, int value) {
-        MTask element = repo.findById(taskID).get();
+    public void updateProgress(long taskID, int value, MUser user) {
+        MTask element = user.tasks.stream().filter(elt -> elt.id == taskID).findFirst().get();
         // TODO validate value is between 0 and 100
         MProgressEvent pe= new MProgressEvent();
         pe.resultPercentage = value;
